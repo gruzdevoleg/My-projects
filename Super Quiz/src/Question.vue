@@ -3,13 +3,12 @@
         <h4 v-if="currentQuestionNumber<questions.length">{{ questions[currentQuestionNumber].question }}</h4>
         <h4 v-else>It was the last question!</h4>
         <div class="content" v-if="currentQuestionNumber<questions.length">
-            
             <button
-             class="choice-box btn btn-primary"
-             :key="variant"
-             v-for="(variant) in questions[currentQuestionNumber].variants"
-             @click="checkAnswer(variant)"
-             >{{ variant }}</button>
+                class="choice-box btn btn-primary"
+                :key="variant"
+                v-for="(variant) in questions[currentQuestionNumber].variants"
+                @click="checkAnswer(variant)"
+            >{{ variant }}</button>
         </div>
     </div>
 </template>
@@ -17,12 +16,14 @@
 <script>
     export default {
         props: {
-            totalAskedQuestions: Number
+            totalAskedQuestions: Number,
+            
         },
 
         data() {
             return {
                 currentQuestionNumber: this.totalAskedQuestions,
+                
                 questions: [
                     {
                         question: 'What is 10 + 15?',
@@ -53,19 +54,17 @@
                 let numbersArr = [];
                 let result = 0;
                 questionStrToArr.forEach((element, index, arr) => {
-                if (parseInt(element)) {
-                      (arr[index-1] && arr[index-1] === '-') ? result -= Number(element) : result += Number(element);
-                    }
+                    if (parseInt(element)) {
+                        (arr[index-1] && arr[index-1] === '-') ? result -= Number(element) : result += Number(element);
+                        }
                 });
                 
-                if ( result === selectedAnswer) {
-                    alert('OK');
-                }
-
+                result === selectedAnswer ? this.checkResult = true : this.checkResult = false;
                 this.currentQuestionNumber++;
-                this.$emit('NextQuestion', this.currentQuestionNumber);
-             
-            }
+                this.$emit('NextQuestion', { currentQuestionNumber: this.currentQuestionNumber,
+                                             checkResult: this.checkResult
+                                             });
+             }
         }
     }
 </script>

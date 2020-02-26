@@ -5,17 +5,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                    
                     <transition name="fade" mode="out-in">
                         <components 
-                        :is="selectedCompopnent"
+                        :is="selectedComponent"
                         :totalAskedQuestions="questionsCounter"
-                        @NextQuestion="questionsCounter=$event"
+                         @NextQuestion="showAnswerResult"
                         ></components>
                     </transition>
-                    <h3>{{ questionsCounter }}/10</h3>
-                    
-                </div>
+                    <h3>{{ questionsCounter }}/4</h3>
+                 </div>
             </div>
         </div>
     </div>
@@ -28,7 +26,7 @@
     export default {
         data() {
             return {
-               selectedCompopnent: 'app-question',
+               selectedComponent: 'app-question',
                questionsCounter: 0
             }
         },
@@ -37,11 +35,13 @@
             appQuestion: Question,
             appAnswer: Answer,
         },
-
-        
-
-       
+      
         methods: {
+
+            showAnswerResult($event) {
+                this.questionsCounter=$event.currentQuestionNumber;
+                this.selectedComponent = $event.checkResult ? 'app-answer' : 'app-question';
+            }
             
             // beforeEnter(el) {
                
