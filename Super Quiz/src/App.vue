@@ -1,167 +1,73 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-
-                <h1>Transitions</h1>
-                <hr>
-               <button @click="show = !show" class="btn btn-primary">Show alert</button>
-               <br>
-               <br>
-               <select v-model="alertAnimation" class="form-control">
-                   <option value="fade">Fade</option>
-                   <option value="slide">Slide</option>
-               </select>
-               <hr>
-               <transition :name="alertAnimation">
-                   <div v-if="show" class="alert alert-info">This is some info</div>
-               </transition>
-               <transition :name="alertAnimation" type="animation">
-                   <div v-if="show" class="alert alert-info">This is some info</div>
-               </transition>
-               <transition 
-               enter-active-class="animated bounce"
-               
-               leave-active-class="animated shake"
-               
-               ><div v-if="show" class="alert alert-info">This is some info</div>
-               </transition>
-               <transition :name="alertAnimation" mode="out-in">
-                   <div v-if="show" class="alert alert-info" key="info">This is some info</div>
-                   <div v-else class="alert alert-warning" key="warning">This is some warning</div>
-               </transition>
-               <hr>
-               <button class="btn btn-primary" @click="load=!load">Load / Remove element</button>
-               <br><br>
-
-               <!-- animate with js
-               There are 8 events, which <transition> element emits from time to time-->
-               <transition 
-                @before-enter="beforeEnter"
-                @enter="enter"
-                @after-enter="afterEnter"
-                @enter-chancelled="enterCancelled"
-                
-                @before-leave="beforeLeave"
-                @leave="leave"
-                @after-leave="afterLeave"
-                @leave-chancelled="leaveCancelled"
-                :css = 'false'
-                ><div style="width: 300px; height: 100px; background-color: lightgreen" v-if="load"></div>
-                   
-               </transition>
-               <hr>
-                <button class="btn btn-primary" @click='selectCompopnent'>Switch component!</button>
-
-                <!-- mode="out-in" - second element will appear only after first el has disappeared  -->
-                <transition name="fade" mode="out-in">
-                    <components :is="selectedCompopnent">
-                    </components>
-                </transition>    
-
-               
-                <button class="btn btn-primary" @click="addItem">Click to add item!</button>
-                <br><br>
-                <ul class="list-group">
-                    <transition-group name="slide">
-                        <li class="list-group-item"
-                            :key="item"
-                            v-for="(item, index) in numbers"
-                            @click="removeItem(index)"
-                            style="cursor: pointer"
-                            :key1="number"
-                        >{{ item }}</li>
-                    </transition-group>
-                </ul>          
+    <div>
+        <h1>The Super Quiz</h1>
+        <hr>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                    
+                    <transition name="fade" mode="out-in">
+                        <components 
+                        :is="selectedCompopnent"
+                        :totalAskedQuestions="questionsCounter"
+                        @NextQuestion="questionsCounter=$event"
+                        ></components>
+                    </transition>
+                    <h3>{{ questionsCounter }}/10</h3>
+                    
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import Danger from './dangerAlert.vue';
-    import Success from './succesAlert.vue'
+    import Question from './Question.vue';
+    import Answer from './Answer.vue';
    
     export default {
         data() {
             return {
-                show: false,
-                alertAnimation: 'fade',
-                load: true,
-                elementWidth: 100,
-                selectedCompopnent: 'app-success',
-                numbers: [1, 2, 3, 4, 5]
+               selectedCompopnent: 'app-question',
+               questionsCounter: 0
             }
         },
 
         components: {
-            appDanger: Danger,
-            appSuccess: Success
+            appQuestion: Question,
+            appAnswer: Answer,
         },
 
+        
+
+       
         methods: {
-            selectCompopnent() {
-                this.selectedCompopnent === 'app-success' ? this.selectedCompopnent = 'app-danger' : this.selectedCompopnent = 'app-success';
-            },
-
-            addItem() {
-                const randPosition = Math.floor(Math.random() * this.numbers.length);
-                this.numbers.splice(randPosition, 0, this.numbers.length + 1);
-            },
-
-            removeItem(index) {
-                this.numbers.splice(index, 1);
-            },
-
-            beforeEnter(el) {
-                console.log('beforeEnter');
-                this.elementWidth = 100;
-                this.el.style.width = this.elementWidth + 'px';
-            },
-            enter(el, done) {
-                console.log('enter');
-                let round = 1;
-                const interval = setInterval(() => {
-                    el.style.width = (this.elementWidth + round*10) + 'px';
-                    round++;
-                    if (round > 20) {
-                        clearInterval(interval);
-                        done();
-                    }
-                }, 20)
+            
+            // beforeEnter(el) {
+               
+            // },
+            // enter(el, done) {
+                               
+            // },
+            // afterEnter(el) {
                 
-            },
-            afterEnter(el) {
-                console.log('afterEnter');
-            },
-            enterCancelled(el) {
-                console.log('enterCancelled');
-            },
-
-            beforeLeave(el) {
-                console.log('beforeLeave');
-                this.elementWidth = 300;
-                el.style.width = this.elementWidth + 'px';
-            },
-            leave(el, done) {
-                console.log('leave');
-                let round = 1;
-                const interval = setInterval(() => {
-                    el.style.width = (this.elementWidth - round*10) + 'px';
-                    round++;
-                    if (round > 20) {
-                        clearInterval(interval);
-                        done();
-                    }
-                }, 20);
+            // },
+            // enterCancelled(el) {
                 
-            },
-            afterLeave(el) {
-                console.log('afterLeave');
-            },
-            leaveCancelled(el) {
-                console.log('leaveCancelled');
-            }
+            // },
+
+            // beforeLeave(el) {
+                
+            // },
+            // leave(el, done) {
+                
+            // },
+            // afterLeave(el) {
+                
+            // },
+            // leaveCancelled(el) {
+                
+            // }
         }
 
        
@@ -169,6 +75,13 @@
 </script>
 
 <style>
+h1 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
 .fade-enter {
     opacity: 0;
 }
