@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">YOU</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center"
+                  	 style="background-color: green; margin: 0; color: white;"
+                	 :style="{width: myHealthLevel + '%'}"
+                >
+                	<span v-if="isGameStarted" 
+                		  style="display: inline-block; height: 100%; line-height: 40px;"
+                	>{{ myHealthLevel }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="healthbar">
+                <div 
+                	class="healthbar text-center"
+                 	style="background-color: green; margin: 0; color: white;"
+                	:style="{width: monsterHealthLevel + '%'}"
+                >
+                	<span v-if="isGameStarted"
+                	 	  style="display: inline-block; height: 100%; line-height: 40px;"
+                	 >{{ monsterHealthLevel }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="row controls" v-if="!isGameStarted">
+        <div class="small-12 columns">
+            <button id="start-game" @click="startGame">START NEW GAME</button>
+        </div>
+    </section>
+    <section class="row controls game-btns" v-if="isGameStarted">
+        <div class="small-12 columns">
+            <button id="attack" @click="myAttack">ATTACK</button>
+            <button id="special-attack" @click="myAttack">SPECIAL ATTACK</button>
+            <button id="heal" @click="healMe">HEAL</button>
+            <button id="give-up" @click="giveUp">GIVE UP</button>
+        </div>
+    </section>
+    <section class="row log">
+        <div class="small-12 columns">
+            <ul>
+                <li 
+                	v-for="log in actionLogsArr"
+                   	:class="{'player-turn': log.isPlayer, 'monster-turn': log.isMonster}"
+                >
+					{{ log.text }}
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+<script>
+	new Vue({
+		el: '#app',
+		data: {
+			isGameStarted: false,
+			myHealthLevel: 80,
+			monsterHealthLevel: 80,
+			actionLogsArr: [],
+			
+		},
+
+		computed: {
+			checkWin() {
+				if (this.monsterHealthLevel <= 0) {
+					this.monsterHealthLevel = 0;
+					alert('GAME OVER! YOU WIN!');
+					this.reset();
+					return true;
+				} else if (this.myHealthLevel <= 0) {
+					
+					this.myHealthLevel = 0;
+					alert('GAME OVER! MONSTER WIN!');
+					this.reset();
+					return true;
+					
+				} else {
+					return false;
+				}
+			},
+		},
+		
+		methods: {
+			startGame() {
+				this.isGameStarted = true;
+				this.monsterHealthLevel = 100;
+				this.myHealthLevel = 100;
+				this.actionLogsArr = [];
+			},
+
+			getRandomIntInclusive (min, max) {
+				return Math.floor(Math.random() * max) + min;  //Включаючи мінімум та максимум 
+			},
+
+			reset() {
+				this.isGameStarted = false;
+				this.monsterHealthLevel = 80;
+				this.myHealthLevel = 80;
+			},
+
+			
+
+			myAttack(event) {
+				let controlBtnId = event.target.getAttribute('id');
+				let damageLevel;
+
+				if (controlBtnId === 'attack') {
+					damageLevel = this.getRandomIntInclusive(1, 10);
+				}
+				if (controlBtnId === 'special-attack') {
+					damageLevel = this.getRandomIntInclusive(10, 10);
+				}
+				
+				this.monsterHealthLevel -= damageLevel;
+				this.actionLogsArr.push({
+					isPlayer: true,
+					text: 'player hits Monster for ' + damageLevel
+				});
+
+				if (this.checkWin) {
+					return;
+				}
+
+				setTimeout(this.monsterAttack(event, controlBtnId), 100);
+			},
+
+			healMe(event) {
+				if (this.myHealthLevel === 100) {
+					return;
+				}
+
+				let controlBtnId = event.target.getAttribute('id');
+				let healLevel = this.getRandomIntInclusive(1, 10);
+				this.myHealthLevel += healLevel;
+				
+				this.actionLogsArr.push({
+					isPlayer: true,
+					text: 'player heals himself for ' + healLevel
+				});
+
+				if (this.myHealthLevel > 100) {
+					this.myHealthLevel = 100;
+				}
+		
+				setTimeout(this.monsterAttack(event, controlBtnId), 100);
+			},
+
+			monsterAttack(event, controlBtnId) {
+				let damageLevel;
+
+				if (controlBtnId === 'attack' || controlBtnId === 'heal') {
+					damageLevel = this.getRandomIntInclusive(1, 10);
+				}
+				if (controlBtnId === 'special-attack') {
+					damageLevel = this.getRandomIntInclusive(10, 10);
+				}
+
+				this.myHealthLevel -= damageLevel;
+				
+				this.actionLogsArr.push({
+					isMonster: true,
+					text: 'monster hits player for ' + damageLevel
+				});
+
+				if (this.checkWin) {
+					return;
+				}
+			},
+
+			giveUp() {
+				alert('DO YOU WANT TO GIVE UP?!');
+				alert('GAME OVER! MONSTER WIN!');
+				this.reset();
+				return;
+			},
+
+			
+			
+		}
+	});
+</script>
+</body>
+</html>
