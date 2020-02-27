@@ -4,13 +4,18 @@
         <hr>
         <button
             class="btn btn-primary"
-            @click="$emit('GoToNextQuestion', 'app-question')"
-        >Back</button>
+            @click="totalAskedQuestions !== totalQuestionsQuantity -1 ? $emit('GoToNextQuestion', 'app-question') : $emit('StartNewQuiz', 'app-question')"
+        >{{ totalAskedQuestions !== totalQuestionsQuantity - 1 ? 'Next question' : 'Start new Quiz!' }}</button>
     </div>
 </template>
 
 <script>
-  
+  export default {
+      props: {
+          totalQuestionsQuantity: Number,
+          totalAskedQuestions: Number
+      },
+  }
 </script>
 
 <style scoped>

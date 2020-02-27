@@ -4,8 +4,8 @@
         <hr>
         <button
             class="btn btn-primary"
-            @click="totalAskedQuestions !== totalQuestionsQuantity ? $emit('GoToNextQuestion', 'app-question') : $emit('StartNewQuiz', 'app-question')"
-        >{{ totalAskedQuestions !== totalQuestionsQuantity ? 'Next question' : 'Start new Quiz!' }}</button>
+            @click="totalAskedQuestions !== totalQuestionsQuantity -1 ? $emit('GoToNextQuestion', 'app-question') : $emit('StartNewQuiz', 'app-question')"
+        >{{ totalAskedQuestions !== totalQuestionsQuantity - 1 ? 'Next question' : 'Start new Quiz!' }}</button>
     </div>
 </template>
 

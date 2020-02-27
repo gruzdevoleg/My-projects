@@ -48,10 +48,10 @@
         },
 
         methods: {
-            StartNewQuiz() {
-                this.currentQuestionNumber = 0;
-                this.$emit('StartNewQuiz');
-            },
+            // StartNewQuiz() {
+            //     this.currentQuestionNumber = 0;
+            //     this.$emit('StartNewQuiz');
+            // },
 
             checkAnswer(selectedAnswer) {
                 if (this.currentQuestionNumber === this.questions.length) 
@@ -68,12 +68,12 @@
 
                 if (result === selectedAnswer) {
                     this.checkResult = true;
-                    this.currentQuestionNumber++;
+                    //this.currentQuestionNumber++;
                 } 
                  
                 this.$emit('checkAnswer', { totalQuestions: this.questions.length,
                                             checkResult: this.checkResult,
-                                            totalRightQuestions:  this.currentQuestionNumber
+                                            //totalRightQuestions:  this.currentQuestionNumber
                                         });
                                 
              }

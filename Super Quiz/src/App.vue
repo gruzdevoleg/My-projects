@@ -5,6 +5,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                    <h3>Вопрос {{ totalRightQuestions + 1 }}  из {{ totalQuestions }}</h3>
                     <transition name="flip" mode="out-in">
                         
                         <component
@@ -13,12 +14,12 @@
                         :totalQuestionsQuantity="totalQuestions"
                         :totalAskedQuestions="totalRightQuestions"
                          @GoToNextQuestion="showNextQuestion"
-                         @checkAnswer="nextStep"
+                         @checkAnswer="showCheckingResult"
                          @StartNewQuiz="startNewQuiz"
                         ></component>
                         
                     </transition>
-                    <h3>{{ totalRightQuestions }}/{{ totalQuestions }}</h3>
+                    
                  </div>
             </div>
         </div>
@@ -49,11 +50,12 @@
 
             showNextQuestion($event) {
                 this.selectedComponent = $event;
-             },
+                this.totalRightQuestions++;
+            },
 
-            nextStep($event) {
+            showCheckingResult($event) {
                 this.totalQuestions = $event.totalQuestions;
-                this.totalRightQuestions = $event.totalRightQuestions;
+                //this.totalRightQuestions = $event.totalRightQuestions;
                 this.selectedComponent = $event.checkResult ? 'app-answer-right' : 'app-answer-wrong';
                 
             },
