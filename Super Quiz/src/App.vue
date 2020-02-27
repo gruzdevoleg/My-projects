@@ -5,14 +5,20 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                    <transition name="fade" mode="out-in">
-                        <components 
+                    <transition name="flip" mode="out-in">
+                        
+                        <component
+
                         :is="selectedComponent"
-                        :totalAskedQuestions="questionsCounter"
-                         @NextQuestion="showAnswerResult"
-                        ></components>
+                        :totalQuestionsQuantity="totalQuestions"
+                        :totalAskedQuestions="totalRightQuestions"
+                         @GoToNextQuestion="showNextQuestion"
+                         @checkAnswer="nextStep"
+                         @StartNewQuiz="startNewQuiz"
+                        ></component>
+                        
                     </transition>
-                    <h3>{{ questionsCounter }}/4</h3>
+                    <h3>{{ totalRightQuestions }}/{{ totalQuestions }}</h3>
                  </div>
             </div>
         </div>
@@ -21,53 +27,41 @@
 
 <script>
     import Question from './Question.vue';
-    import Answer from './Answer.vue';
+    import AnswerRight from './AnswerRight.vue';
+    import AnswerWrong from './AnswerWrong.vue';
    
     export default {
         data() {
             return {
                selectedComponent: 'app-question',
-               questionsCounter: 0
+               totalRightQuestions: 0,
+               totalQuestions: 4
             }
         },
 
         components: {
             appQuestion: Question,
-            appAnswer: Answer,
+            appAnswerRight: AnswerRight,
+            appAnswerWrong: AnswerWrong
         },
       
         methods: {
 
-            showAnswerResult($event) {
-                this.questionsCounter=$event.currentQuestionNumber;
-                this.selectedComponent = $event.checkResult ? 'app-answer' : 'app-question';
-            }
-            
-            // beforeEnter(el) {
-               
-            // },
-            // enter(el, done) {
-                               
-            // },
-            // afterEnter(el) {
-                
-            // },
-            // enterCancelled(el) {
-                
-            // },
+            showNextQuestion($event) {
+                this.selectedComponent = $event;
+             },
 
-            // beforeLeave(el) {
+            nextStep($event) {
+                this.totalQuestions = $event.totalQuestions;
+                this.totalRightQuestions = $event.totalRightQuestions;
+                this.selectedComponent = $event.checkResult ? 'app-answer-right' : 'app-answer-wrong';
                 
-            // },
-            // leave(el, done) {
-                
-            // },
-            // afterLeave(el) {
-                
-            // },
-            // leaveCancelled(el) {
-                
-            // }
+            },
+
+            startNewQuiz($event) {
+                this.totalRightQuestions = 0;
+                this.selectedComponent = $event;
+            }
         }
 
        
@@ -82,52 +76,38 @@ h1 {
     margin-bottom: 30px;
     text-align: center;
 }
-.fade-enter {
-    opacity: 0;
+.flip-enter {
+    /* transform: rotateY(0); */
 }
-.fade-enter-active {
-    transition: opacity 1s;
-}
-
-.fade-leave-active {
-    transition: opacity 1s;
-    opacity: 0;
+.flip-enter-active {
+    animation: flip-in .5s ease-out forwards; /*forwards stops an animated element in the end position, 
+    and doesn't retriev it to initial state*/
 }
 
-.slide-enter {
-    opacity: 0;
-}
-.slide-enter-active {
-    animation: slide-in 1s ease-out forwards;
-    transition: opacity 0.5s;
+.flip-leave {
+    /* transform: rotateY(0); */
 }
 
-.slide-leave-active {
-    animation: slide-out 1s ease-out forwards;
-    transition: opacity 1s;
-    opacity: 0;
-    position: absolute;
+.flip-leave-active {
+     animation: flip-out .5s ease-out forwards
 }
 
-.slide-move {
-    transition: transform 1s
-}
 
-@keyframes slide-in {
+@keyframes flip-in {
     from {
-        transform: translateY(20px);
+        transform: rotateY(90deg);
     }
     to {
-        transform: translateY(0);
+        transform: rotateY(0);
     }
 }
 
-@keyframes slide-out {
+@keyframes flip-out {
     from {
-        transform: translateY(0);
+        transform: rotateY(0);
     }
     to {
-        transform: translateY(20px);
+        transform: rotateY(90deg);
     }
 }
 

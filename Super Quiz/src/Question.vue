@@ -1,7 +1,7 @@
 <template>
     <div class="question-wrapper">
         <h4 v-if="currentQuestionNumber<questions.length">{{ questions[currentQuestionNumber].question }}</h4>
-        <h4 v-else>It was the last question!</h4>
+        
         <div class="content" v-if="currentQuestionNumber<questions.length">
             <button
                 class="choice-box btn btn-primary"
@@ -10,10 +10,12 @@
                 @click="checkAnswer(variant)"
             >{{ variant }}</button>
         </div>
+        
     </div>
 </template>
 
 <script>
+   
     export default {
         props: {
             totalAskedQuestions: Number,
@@ -23,7 +25,7 @@
         data() {
             return {
                 currentQuestionNumber: this.totalAskedQuestions,
-                
+                checkResult: false,
                 questions: [
                     {
                         question: 'What is 10 + 15?',
@@ -46,6 +48,11 @@
         },
 
         methods: {
+            StartNewQuiz() {
+                this.currentQuestionNumber = 0;
+                this.$emit('StartNewQuiz');
+            },
+
             checkAnswer(selectedAnswer) {
                 if (this.currentQuestionNumber === this.questions.length) 
                     return;
@@ -58,14 +65,20 @@
                         (arr[index-1] && arr[index-1] === '-') ? result -= Number(element) : result += Number(element);
                         }
                 });
-                
-                result === selectedAnswer ? this.checkResult = true : this.checkResult = false;
-                this.currentQuestionNumber++;
-                this.$emit('NextQuestion', { currentQuestionNumber: this.currentQuestionNumber,
-                                             checkResult: this.checkResult
-                                             });
+
+                if (result === selectedAnswer) {
+                    this.checkResult = true;
+                    this.currentQuestionNumber++;
+                } 
+                 
+                this.$emit('checkAnswer', { totalQuestions: this.questions.length,
+                                            checkResult: this.checkResult,
+                                            totalRightQuestions:  this.currentQuestionNumber
+                                        });
+                                
              }
-        }
+        },
+
     }
 </script>
 
@@ -97,6 +110,9 @@
         font-size: 22px;
         padding: 8px;
         margin: 20px;
-        
+     }
+
+    .start {
+        margin: 20px 0;
     }
 </style>
