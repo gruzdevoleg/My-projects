@@ -3,17 +3,21 @@
   "description": "A Vue.js project",
   "version": "1.0.0",
   "author": "Oleg Gruzdev <oleg.gruzdev.1982@gmail.com>",
-  "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "@popperjs/core": "^2.1.1",
     "autoprefixer": "^9.7.4",
     "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "bootstrap-vue": "^2.9.0",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vuelidate": "^0.7.5",
@@ -33,19 +37,20 @@
     ]
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
     "babel-preset-stage-2": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "cross-env": "^5.2.1",
-    "css-loader": "^0.28.7",
-    "file-loader": "^1.1.4",
-    "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^8.0.2",
+    "scss-loader": "0.0.1",
+    "style-loader": "^1.1.3",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "webpack": "^2.1.0-beta.25",
+    "webpack-dev-server": "2.1.0-beta.0"
   }
 }

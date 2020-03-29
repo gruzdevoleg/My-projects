@@ -12,11 +12,49 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue',
-        options: {
-          // vue-loader options go here
-        }
+        loader: 'vue-loader',
+       
       },
+
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          
+        ],
+      },
+
+      {
+        test: /\.scss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+
+      // {
+      //   test: /\.s[ac]ss$/i,
+      //   use: [
+      //     // Creates `style` nodes from JS strings
+      //     'style-loader',
+      //     // Translates CSS into CommonJS
+      //     'css-loader',
+      //     // Compiles Sass to CSS
+      //     'sass-loader',
+      //   ],
+      // },
+
+      {
+        test: /\.less$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'less-loader'
+        ]
+      },
+
       {
         test: /\.js$/,
         loader: 'babel',
