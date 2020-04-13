@@ -26,9 +26,9 @@ module.exports = {
       },
 
       {
-        test: /\.scss$/,
+        test: /\.s[ac]ss$/i,
         use: [
-          'vue-style-loader',
+          'style-loader',
           'css-loader',
           'sass-loader'
         ]
@@ -57,7 +57,7 @@ module.exports = {
 
       {
         test: /\.js$/,
-        loader: 'babel',
+        loader: 'babel-loader',
         exclude: /node_modules/
       },
       {
