@@ -49,11 +49,11 @@ export default {
     methods: {
         buyStock() {
             const order = {
-                stockId: this.stockItem.id,
+                stockId: this.stock.id,
                 stockPrice: this.stock.price,
                 quantity: this.quantity,
             };
-            console.log(order);
+            //console.log(order);
             this.quantity = 0;
         },
 
