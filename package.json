@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "author": "Oleg Gruzdev <oleg.gruzdev.1982@gmail.com>",
   "private": true,
+  "engines": {
+    "node": "10.14.0"
+  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
