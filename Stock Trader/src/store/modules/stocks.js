@@ -8,27 +8,33 @@ const mutations = {
         state.stocks = stocks;
     },
 
+    //ставим всем стокам новые цены
     'RND_STOCKS' (state) {
-
+      state.stocks.forEach(stock => {
+        stock.price = Math.round(stock.price * (1 + Math.random() - 0.5));
+      });
     },
 
 
 };
 
 const actions = {
-    buyStock: ({ commit }, order) => {
-        commit();
+    buyStock({ commit }, order) {
+      //коммитит мутацию BUY_STOCK из модуля portfolio, передавая ей сток, который покупаем
+        commit('BUY_STOCK', order);
     },
-    initStocks: ({ commit }) => {
+    initStocks({ commit }) {
         commit('SET_STOCKS', stocks);
     },
-    randomizeStocks: ({ commit }) => {
+    randomizeStocks({ commit }) {
         commit('RND_STOCKS');
     }
 
 };
 const getters = {
-    stocks: state => state.stocks,
+    stocks(state) {
+      return state.stocks;
+    } 
 };
 export default {
     state,
